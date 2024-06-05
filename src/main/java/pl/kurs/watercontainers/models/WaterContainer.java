@@ -31,18 +31,6 @@ public class WaterContainer implements Serializable {
         return waterLevel;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMaxCapacity(double maxCapacity) {
-        this.maxCapacity = maxCapacity;
-    }
-
-    public void setWaterLevel(double waterLevel) {
-        this.waterLevel = waterLevel;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,6 +62,7 @@ public class WaterContainer implements Serializable {
         }
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
+
 
 
 }
