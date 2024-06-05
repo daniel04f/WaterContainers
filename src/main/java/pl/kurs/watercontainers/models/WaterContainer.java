@@ -1,15 +1,19 @@
 package pl.kurs.watercontainers.models;
 
+import pl.kurs.watercontainers.exceptions.InvalidCapacityException;
+import pl.kurs.watercontainers.exceptions.InvalidLevelException;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class WaterContainer {
+public class WaterContainer implements Serializable {
 
 
     private String name;
     private double maxCapacity;
     private double waterLevel;
 
-    public WaterContainer(String name, double maxCapacity, double waterLevel) {
+    private WaterContainer(String name, double maxCapacity, double waterLevel) {
         this.name = name;
         this.maxCapacity = maxCapacity;
         this.waterLevel = waterLevel;
@@ -59,6 +63,16 @@ public class WaterContainer {
                 ", maxCapacity=" + maxCapacity +
                 ", waterLevel=" + waterLevel +
                 '}';
+    }
+
+    public static WaterContainer create(String name, double maxCapacity, double waterLevel) throws InvalidCapacityException {
+        if (maxCapacity <= 0) {
+            throw new InvalidCapacityException("Max capacity must by more than 0");
+        }
+        if (waterLevel > 0 && waterLevel < maxCapacity) {
+            throw new InvalidLevelException("Invalid water level value");
+        }
+        return new WaterContainer(name, maxCapacity, waterLevel);
     }
 
 
