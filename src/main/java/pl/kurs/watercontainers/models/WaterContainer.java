@@ -2,12 +2,12 @@ package pl.kurs.watercontainers.models;
 
 import pl.kurs.watercontainers.exceptions.InvalidCapacityException;
 import pl.kurs.watercontainers.exceptions.InvalidLevelException;
+import pl.kurs.watercontainers.exceptions.InvalidWaterAmountException;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class WaterContainer implements Serializable {
-
 
     private String name;
     private double maxCapacity;
@@ -53,7 +53,7 @@ public class WaterContainer implements Serializable {
                 '}';
     }
 
-    public static WaterContainer create(String name, double maxCapacity, double waterLevel) throws InvalidCapacityException {
+    public static WaterContainer create(String name, double maxCapacity, double waterLevel) {
         if (maxCapacity <= 0) {
             throw new InvalidCapacityException("Max capacity must by more than 0");
         }
@@ -63,6 +63,15 @@ public class WaterContainer implements Serializable {
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
 
+    public void addWater(double value) {
+        if (value <= 0) {
+            throw new InvalidWaterAmountException("Value should by more than 0");
+        }
+        if (waterLevel + value > maxCapacity) {
+            throw new InvalidWaterAmountException("Too much water to add");
+        }
+        waterLevel += value;
+    }
 
 
 }
