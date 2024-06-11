@@ -57,7 +57,7 @@ public class WaterContainer implements Serializable {
         if (maxCapacity <= 0) {
             throw new InvalidCapacityException("Max capacity must by more than 0");
         }
-        if (waterLevel > 0 && waterLevel < maxCapacity) {
+        if (waterLevel > 0 && waterLevel > maxCapacity) {
             throw new InvalidLevelException("Invalid water level value");
         }
         return new WaterContainer(name, maxCapacity, waterLevel);
@@ -81,6 +81,11 @@ public class WaterContainer implements Serializable {
             throw new InvalidWaterAmountException("Too much water to subtract");
         }
         waterLevel -= value;
+    }
+
+    public void pourWater(WaterContainer destinationWaterContainer, double value) {
+        subtractWater(value);
+        destinationWaterContainer.addWater(value);
     }
 
 
