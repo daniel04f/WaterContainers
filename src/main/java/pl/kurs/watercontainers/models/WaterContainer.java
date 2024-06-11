@@ -2,12 +2,12 @@ package pl.kurs.watercontainers.models;
 
 import pl.kurs.watercontainers.exceptions.InvalidCapacityException;
 import pl.kurs.watercontainers.exceptions.InvalidLevelException;
+import pl.kurs.watercontainers.exceptions.InvalidWaterAmountException;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class WaterContainer implements Serializable {
-
 
     private String name;
     private double maxCapacity;
@@ -29,18 +29,6 @@ public class WaterContainer implements Serializable {
 
     public double getWaterLevel() {
         return waterLevel;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMaxCapacity(double maxCapacity) {
-        this.maxCapacity = maxCapacity;
-    }
-
-    public void setWaterLevel(double waterLevel) {
-        this.waterLevel = waterLevel;
     }
 
     @Override
@@ -65,15 +53,42 @@ public class WaterContainer implements Serializable {
                 '}';
     }
 
-    public static WaterContainer create(String name, double maxCapacity, double waterLevel) throws InvalidCapacityException {
+    public static WaterContainer create(String name, double maxCapacity, double waterLevel) {
         if (maxCapacity <= 0) {
             throw new InvalidCapacityException("Max capacity must by more than 0");
         }
-        if (waterLevel > 0 && waterLevel < maxCapacity) {
+        if (waterLevel > 0 && waterLevel > maxCapacity) {
             throw new InvalidLevelException("Invalid water level value");
         }
         return new WaterContainer(name, maxCapacity, waterLevel);
     }
+
+    public void addWater(double value) {
+        if (value <= 0) {
+            throw new InvalidWaterAmountException("Value should by more than 0");
+        }
+        if (waterLevel + value > maxCapacity) {
+            throw new InvalidWaterAmountException("Too much water to add");
+        }
+        waterLevel += value;
+    }
+
+    public void subtractWater(double value) {
+        if (value <= 0) {
+            throw new InvalidWaterAmountException("Value should by more than 0");
+        }
+        if (waterLevel - value < 0) {
+            throw new InvalidWaterAmountException("Too much water to subtract");
+        }
+        waterLevel -= value;
+    }
+
+    public void pourWater(WaterContainer destinationWaterContainer, double value) {
+        subtractWater(value);
+        destinationWaterContainer.addWater(value);
+    }
+
+
 
 
 }
