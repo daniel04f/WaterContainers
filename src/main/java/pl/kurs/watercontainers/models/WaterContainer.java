@@ -73,5 +73,17 @@ public class WaterContainer implements Serializable {
         waterLevel += value;
     }
 
+    public void subtractWater(double value) {
+        if (value <= 0) {
+            throw new InvalidWaterAmountException("Value should by more than 0");
+        }
+        if (waterLevel - value < 0) {
+            throw new InvalidWaterAmountException("Too much water to subtract");
+        }
+        waterLevel -= value;
+    }
+
+
+
 
 }
